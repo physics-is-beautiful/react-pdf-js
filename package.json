@@ -14,9 +14,6 @@
     "build": "rollup -c",
     "start": "rollup -c -w",
     "prepare": "npm run build"
-//    "prepare": "yarn run build",
-//    "predeploy": "cd example && yarn install && yarn run build",
-//    "deploy": "gh-pages -d example/build"
   },
   "dependencies": {
     "pdfjs-dist": "2.0.943"
