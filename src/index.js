@@ -79,6 +79,13 @@ export default class ReactPdfJs extends Component {
 
     const rTask = page.render(renderContext);
     this.setState({ renderTask: rTask });
+
+    rTask.promise.then(function() {
+    }, function (reason) {
+      if (reason.name !== 'RenderingCancelledException') {
+        throw reason;
+      }
+    });
   }
 
   render() {
