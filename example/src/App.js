@@ -5,7 +5,7 @@ export default class App extends Component {
   state = { page: 1 };
 
   onDocumentComplete = (pages) => {
-    this.setState({ page: 1, pages });
+    this.setState({ page: 1, scale: 1, pages });
   }
 
   handlePrevious = () => {
@@ -16,7 +16,18 @@ export default class App extends Component {
     this.setState({ page: this.state.page + 1 });
   }
 
+  handleZoom = () => {
+    this.setState({ scale: this.state.scale + 1 });
+  }
+
   renderPagination = (page, pages) => {
+    let zoomButton = (
+      <li className="zoom">
+        <button onClick={this.handleZoom} className="btn btn-link">
+          zoom
+        </button>
+      </li>
+    );
     let previousButton = (
       <li className="previous">
         <button onClick={this.handlePrevious} className="btn btn-link">
@@ -52,6 +63,7 @@ export default class App extends Component {
     return (
       <nav>
         <ul className="pager">
+          {zoomButton}
           {previousButton}
           {nextButton}
         </ul>
@@ -66,8 +78,13 @@ export default class App extends Component {
     }
     return (
       <div>
-        <Pdf file="test.pdf" onDocumentComplete={this.onDocumentComplete} page={this.state.page} />
         {pagination}
+        <Pdf
+          file="test.pdf"
+          onDocumentComplete={this.onDocumentComplete}
+          page={this.state.page}
+          scale={this.state.scale}
+        />
       </div>
     );
   }

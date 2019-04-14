@@ -29,6 +29,7 @@ export default class ReactPdfJs extends Component {
 
   state = {
     pdf: null,
+    renderTask: null
   };
 
   componentDidMount() {
@@ -71,7 +72,13 @@ export default class ReactPdfJs extends Component {
       canvasContext,
       viewport,
     };
-    page.render(renderContext);
+
+    if (this.state.renderTask) {
+      this.state.renderTask.cancel();
+    }
+
+    const rTask = page.render(renderContext);
+    this.setState({ renderTask: rTask });
   }
 
   render() {
