@@ -13,10 +13,9 @@
     "test:watch": "react-scripts test --env=jsdom",
     "build": "rollup -c",
     "start": "rollup -c -w",
-//    "prepare": "yarn run build",
-    "prepare": "npm run build",
-//    "predeploy": "cd example && yarn install && yarn run build",
-//    "deploy": "gh-pages -d example/build"
+    "prepare": "yarn run build",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "deploy": "gh-pages -d example/build"
   },
   "dependencies": {
     "pdfjs-dist": "2.0.943"
