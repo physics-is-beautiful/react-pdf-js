@@ -65763,8 +65763,9 @@ var ReactPdfJs = function (_Component) {
       var viewport = void 0;
 
       if (inital) {
+        canvas.style.width = '100%';
+        canvas.width = canvas.offsetWidth;
         viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
-        console.log(viewport);
       } else {
         viewport = page.getViewport(scale);
       }
