@@ -16,15 +16,30 @@ export default class App extends Component {
     this.setState({ page: this.state.page + 1 });
   }
 
-  handleZoom = () => {
-    this.setState({ scale: this.state.scale + 1 });
+  onScaleUpdated = (scale) => {
+    this.setState({ scale });
+  }
+
+  handleZoom = (zoom) => {
+    if (zoom === '-') {
+      this.setState({ scale: this.state.scale - 0.3 });
+    } else {
+      this.setState({ scale: this.state.scale + 0.3 });
+    }
   }
 
   renderPagination = (page, pages) => {
     let zoomButton = (
       <li className="zoom">
         <button onClick={this.handleZoom} className="btn btn-link">
-          zoom
+          zoom +
+        </button>
+      </li>
+    );
+    let zoomPButton = (
+      <li className="zoom">
+        <button onClick={() => this.handleZoom('-')} className="btn btn-link">
+          zoom -
         </button>
       </li>
     );
@@ -64,6 +79,7 @@ export default class App extends Component {
       <nav>
         <ul className="pager">
           {zoomButton}
+          {zoomPButton}
           {previousButton}
           {nextButton}
         </ul>
@@ -84,6 +100,7 @@ export default class App extends Component {
           onDocumentComplete={this.onDocumentComplete}
           page={this.state.page}
           scale={this.state.scale}
+          onScaleUpdated={this.onScaleUpdated}
         />
       </div>
     );

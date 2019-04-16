@@ -65759,20 +65759,32 @@ var ReactPdfJs = function (_Component) {
       pdf: null,
       renderTask: null
     }, _this.drawPDF = function (page) {
-      var inital = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var scale = _this.props.scale;
+      var initial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var _this$props = _this.props,
+          scale = _this$props.scale,
+          maxWidth = _this$props.maxWidth,
+          fitFullWidth = _this$props.fitFullWidth,
+          onScaleUpdated = _this$props.onScaleUpdated;
       var _this2 = _this,
           canvas = _this2.canvas;
 
 
       var viewport = void 0;
 
-      if (inital) {
-        canvas.style.width = '100%';
-        canvas.width = canvas.offsetWidth;
-        viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
+      canvas.style.width = '100%';
+      var parentWidth = canvas.offsetWidth;
+      canvas.style.width = 'auto';
+
+      var fullWidthScale = parentWidth / page.getViewport(1.0).width;
+      if (initial && fitFullWidth) {
+        onScaleUpdated(fullWidthScale);
+        viewport = page.getViewport(fullWidthScale);
       } else {
         viewport = page.getViewport(scale);
+        if (parentWidth < viewport.width * maxWidth / 100) {
+          onScaleUpdated(fullWidthScale);
+          return; // do nothing
+        }
       }
 
       var canvasContext = canvas.getContext('2d');
@@ -65866,6 +65878,7 @@ ReactPdfJs.propTypes = {
   cMapPacked: PropTypes.bool,
   className: PropTypes.string,
   fitFullWidth: PropTypes.bool,
+  onScaleUpdated: PropTypes.func,
   maxWidth: PropTypes.number
 };
 ReactPdfJs.defaultProps = {

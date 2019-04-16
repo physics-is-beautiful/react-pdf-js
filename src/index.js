@@ -18,6 +18,7 @@ export default class ReactPdfJs extends Component {
     cMapPacked: PropTypes.bool,
     className: PropTypes.string,
     fitFullWidth: PropTypes.bool,
+    onScaleUpdated: PropTypes.func,
     maxWidth: PropTypes.number,
   }
 
@@ -65,18 +66,28 @@ export default class ReactPdfJs extends Component {
     }
   }
 
-  drawPDF = (page, inital = false) => {
-    const { scale } = this.props;
+  drawPDF = (page, initial = false) => {
+    const {
+      scale, maxWidth, fitFullWidth, onScaleUpdated,
+    } = this.props;
     const { canvas } = this;
 
     let viewport;
 
-    if (inital) {
-      canvas.style.width = '100%';
-      canvas.width = canvas.offsetWidth;
-      viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
+    canvas.style.width = '100%';
+    const parentWidth = canvas.offsetWidth;
+    canvas.style.width = 'auto';
+
+    const fullWidthScale = parentWidth / page.getViewport(1.0).width
+    if (initial && fitFullWidth) {
+      onScaleUpdated(fullWidthScale);
+      viewport = page.getViewport(fullWidthScale);
     } else {
       viewport = page.getViewport(scale);
+      if (parentWidth < viewport.width * maxWidth / 100) {
+        onScaleUpdated(fullWidthScale);
+        return; // do nothing
+      }
     }
 
     const canvasContext = canvas.getContext('2d');
