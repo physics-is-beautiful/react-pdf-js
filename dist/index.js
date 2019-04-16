@@ -65759,11 +65759,20 @@ var ReactPdfJs = function (_Component) {
       pdf: null,
       renderTask: null
     }, _this.drawPDF = function (page) {
+      var inital = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var scale = _this.props.scale;
-
-      var viewport = page.getViewport(scale);
       var _this2 = _this,
           canvas = _this2.canvas;
+
+
+      var viewport = void 0;
+
+      if (inital) {
+        viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
+        console.log(viewport);
+      } else {
+        viewport = page.getViewport(scale);
+      }
 
       var canvasContext = canvas.getContext('2d');
       canvas.height = viewport.height;
@@ -65807,7 +65816,7 @@ var ReactPdfJs = function (_Component) {
           onDocumentComplete(pdf$$1._pdfInfo.numPages); // eslint-disable-line
         }
         pdf$$1.getPage(page).then(function (p) {
-          return _this3.drawPDF(p);
+          return _this3.drawPDF(p, true);
         });
       });
     }
@@ -65854,14 +65863,18 @@ ReactPdfJs.propTypes = {
   scale: PropTypes.number,
   cMapUrl: PropTypes.string,
   cMapPacked: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
+  fitFullWidth: PropTypes.bool,
+  maxWidth: PropTypes.number
 };
 ReactPdfJs.defaultProps = {
   page: 1,
   onDocumentComplete: null,
   scale: 1,
   cMapUrl: '../node_modules/pdfjs-dist/cmaps/',
-  cMapPacked: false
+  cMapPacked: false,
+  fitFullWidth: true,
+  maxWidth: 100
 };
 
 module.exports = ReactPdfJs;

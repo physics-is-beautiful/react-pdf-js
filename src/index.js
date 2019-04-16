@@ -17,6 +17,8 @@ export default class ReactPdfJs extends Component {
     cMapUrl: PropTypes.string,
     cMapPacked: PropTypes.bool,
     className: PropTypes.string,
+    fitFullWidth: PropTypes.bool,
+    maxWidth: PropTypes.number,
   }
 
   static defaultProps = {
@@ -25,11 +27,13 @@ export default class ReactPdfJs extends Component {
     scale: 1,
     cMapUrl: '../node_modules/pdfjs-dist/cmaps/',
     cMapPacked: false,
+    fitFullWidth: true,
+    maxWidth: 100,
   }
 
   state = {
     pdf: null,
-    renderTask: null
+    renderTask: null,
   };
 
   componentDidMount() {
@@ -46,7 +50,7 @@ export default class ReactPdfJs extends Component {
       if (onDocumentComplete) {
         onDocumentComplete(pdf._pdfInfo.numPages); // eslint-disable-line
       }
-      pdf.getPage(page).then(p => this.drawPDF(p));
+      pdf.getPage(page).then(p => this.drawPDF(p, true));
     });
   }
 
@@ -61,10 +65,18 @@ export default class ReactPdfJs extends Component {
     }
   }
 
-  drawPDF = (page) => {
+  drawPDF = (page, inital = false) => {
     const { scale } = this.props;
-    const viewport = page.getViewport(scale);
     const { canvas } = this;
+
+    let viewport;
+
+    if (inital) {
+      viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
+    } else {
+      viewport = page.getViewport(scale);
+    }
+
     const canvasContext = canvas.getContext('2d');
     canvas.height = viewport.height;
     canvas.width = viewport.width;
