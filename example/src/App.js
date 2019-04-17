@@ -27,7 +27,7 @@ export default class App extends Component {
   }
 
   handleZoom = (zoom) => {
-    let resetButtonState = { zoomInButtonDisabled: false, zoomOutButtonDisabled: false }
+    const resetButtonState = { zoomInButtonDisabled: false, zoomOutButtonDisabled: false }
     if (zoom === '-') {
       this.setState({ scale: this.state.scale - App.zoomStep, ...resetButtonState });
     } else {
