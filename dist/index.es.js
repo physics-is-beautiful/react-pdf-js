@@ -65758,6 +65758,7 @@ var ReactPdfJs = function (_Component) {
       var _this$props = _this.props,
           scale = _this$props.scale,
           maxWidth = _this$props.maxWidth,
+          minWidth = _this$props.minWidth,
           fitFullWidth = _this$props.fitFullWidth,
           onScaleUpdated = _this$props.onScaleUpdated;
       var _this2 = _this,
@@ -65772,12 +65773,28 @@ var ReactPdfJs = function (_Component) {
 
       var fullWidthScale = parentWidth / page.getViewport(1.0).width;
       if (initial && fitFullWidth) {
-        onScaleUpdated(fullWidthScale);
+        if (onScaleUpdated) {
+          onScaleUpdated(fullWidthScale, true, false);
+        }
         viewport = page.getViewport(fullWidthScale);
       } else {
         viewport = page.getViewport(scale);
         if (parentWidth < viewport.width * maxWidth / 100) {
-          onScaleUpdated(fullWidthScale);
+          if (onScaleUpdated) {
+            onScaleUpdated(fullWidthScale, true, false);
+          }
+          return; // do nothing
+        }
+        // console.log(viewport.width)
+        // console.log(parentWidth)
+        if (viewport.width < parentWidth * minWidth / 100) {
+          // const minWidthScale = (parentWidth * minWidth / 100)
+          //   / page.getViewport(minWidth / 100).width
+          // console.log(scale)
+          // console.log(minWidthScale)
+          if (onScaleUpdated) {
+            onScaleUpdated(scale, false, true);
+          }
           return; // do nothing
         }
       }
@@ -65874,7 +65891,8 @@ ReactPdfJs.propTypes = {
   className: PropTypes.string,
   fitFullWidth: PropTypes.bool,
   onScaleUpdated: PropTypes.func,
-  maxWidth: PropTypes.number
+  maxWidth: PropTypes.number,
+  minWidth: PropTypes.number
 };
 ReactPdfJs.defaultProps = {
   page: 1,
@@ -65883,7 +65901,9 @@ ReactPdfJs.defaultProps = {
   cMapUrl: '../node_modules/pdfjs-dist/cmaps/',
   cMapPacked: false,
   fitFullWidth: true,
-  maxWidth: 100
+  maxWidth: 100,
+  minWidth: 10,
+  onScaleUpdated: null
 };
 
 export default ReactPdfJs;

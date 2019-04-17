@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import Pdf from 'react-pdf-js';
 
 export default class App extends Component {
-  state = { page: 1 };
+  state = {
+    page: 1,
+    zoomInButtonDisabled: false,
+    zoomOutButtonDisabled: false,
+  };
+
+  static get zoomStep() { return 0.3; }
 
   onDocumentComplete = (pages) => {
     this.setState({ page: 1, scale: 1, pages });
@@ -16,29 +22,30 @@ export default class App extends Component {
     this.setState({ page: this.state.page + 1 });
   }
 
-  onScaleUpdated = (scale) => {
-    this.setState({ scale });
+  onScaleUpdated = (scale, zoomInButtonDisabled, zoomOutButtonDisabled) => {
+    this.setState({ scale, zoomInButtonDisabled, zoomOutButtonDisabled });
   }
 
   handleZoom = (zoom) => {
+    let resetButtonState = { zoomInButtonDisabled: false, zoomOutButtonDisabled: false }
     if (zoom === '-') {
-      this.setState({ scale: this.state.scale - 0.3 });
+      this.setState({ scale: this.state.scale - App.zoomStep, ...resetButtonState });
     } else {
-      this.setState({ scale: this.state.scale + 0.3 });
+      this.setState({ scale: this.state.scale + App.zoomStep, ...resetButtonState });
     }
   }
 
-  renderPagination = (page, pages) => {
+  renderPagination = (page, pages, zoomInButtonDisabled, zoomOutButtonDisabled) => {
     let zoomButton = (
       <li className="zoom">
-        <button onClick={this.handleZoom} className="btn btn-link">
+        <button onClick={this.handleZoom} className="btn btn-link" disabled={zoomInButtonDisabled}>
           zoom +
         </button>
       </li>
     );
-    let zoomPButton = (
+    let zoomOutButton = (
       <li className="zoom">
-        <button onClick={() => this.handleZoom('-')} className="btn btn-link">
+        <button onClick={() => this.handleZoom('-')} className="btn btn-link" disabled={zoomOutButtonDisabled}>
           zoom -
         </button>
       </li>
@@ -79,7 +86,7 @@ export default class App extends Component {
       <nav>
         <ul className="pager">
           {zoomButton}
-          {zoomPButton}
+          {zoomOutButton}
           {previousButton}
           {nextButton}
         </ul>
@@ -90,7 +97,8 @@ export default class App extends Component {
   render () {
     let pagination = null;
     if (this.state.pages) {
-      pagination = this.renderPagination(this.state.page, this.state.pages);
+      pagination = this.renderPagination(this.state.page, this.state.pages,
+        this.state.zoomInButtonDisabled, this.state.zoomOutButtonDisabled);
     }
     return (
       <div>
