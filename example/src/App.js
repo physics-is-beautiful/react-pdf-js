@@ -108,6 +108,7 @@ export default class App extends Component {
           onDocumentComplete={this.onDocumentComplete}
           page={this.state.page}
           scale={this.state.scale}
+          maxWidth={200}
           onScaleUpdated={this.onScaleUpdated}
         />
       </div>

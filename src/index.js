@@ -84,14 +84,19 @@ export default class ReactPdfJs extends Component {
     const fullWidthScale = parentWidth / page.getViewport(1.0).width
     if (initial && fitFullWidth) {
       if (onScaleUpdated) {
-        onScaleUpdated(fullWidthScale, true, false);
+        let disableZoomIn = false
+        if (maxWidth <= 100) {
+          disableZoomIn = true;
+        }
+        onScaleUpdated(fullWidthScale, disableZoomIn, false);
       }
       viewport = page.getViewport(fullWidthScale);
     } else {
       viewport = page.getViewport(scale);
-      if (parentWidth < viewport.width * maxWidth / 100) {
+      if (viewport.width >= parentWidth * maxWidth / 100) {
         if (onScaleUpdated) {
-          onScaleUpdated(fullWidthScale, true, false);
+          // onScaleUpdated(fullWidthScale, true, false);
+          onScaleUpdated(scale, true, false);
         }
         return; // do nothing
       }
