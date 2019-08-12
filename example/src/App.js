@@ -22,8 +22,15 @@ export default class App extends Component {
     this.setState({ page: this.state.page + 1 });
   }
 
-  onScaleUpdated = (scale, zoomInButtonDisabled, zoomOutButtonDisabled) => {
-    this.setState({ scale, zoomInButtonDisabled, zoomOutButtonDisabled });
+  onScaleUpdated = (_scale, zoomInButtonDisabled, zoomOutButtonDisabled) => {
+
+    // let scale = _scale
+    //
+    // if (!scale) {
+    //   ({ scale } = this.state);
+    // }
+
+    this.setState({ _scale, zoomInButtonDisabled, zoomOutButtonDisabled });
   }
 
   handleZoom = (zoom) => {

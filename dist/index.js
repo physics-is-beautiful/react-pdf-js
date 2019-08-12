@@ -65788,18 +65788,18 @@ var ReactPdfJs = function (_Component) {
         viewport = page.getViewport(fullWidthScale);
       } else {
         viewport = page.getViewport(scale);
+
         if (viewport.width >= parentWidth * maxWidth / 100) {
           if (onScaleUpdated) {
-            // onScaleUpdated(fullWidthScale, true, false);
             onScaleUpdated(scale, true, false);
           }
-          return; // do nothing
+          // return; // do nothing
         }
         if (viewport.width < parentWidth * minWidth / 100) {
           if (onScaleUpdated) {
             onScaleUpdated(scale, false, true);
           }
-          return; // do nothing
+          // return; // do nothing
         }
       }
 
