@@ -1,6 +1,6 @@
 {
   "name": "react-pdf-js",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Simple React component to wrap up PDF.js. The easiest way to render PDFs in your React app.",
   "author": "mikecousins",
   "license": "MIT",
@@ -37,8 +37,8 @@
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.11.1",
     "gh-pages": "^2.0.1",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-scripts": "^1.1.4",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^3.0.7",
