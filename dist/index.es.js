@@ -65788,13 +65788,11 @@ var ReactPdfJs = function (_Component) {
           if (onScaleUpdated) {
             onScaleUpdated(scale, true, false);
           }
-          // return; // do nothing
         }
         if (viewport.width < parentWidth * minWidth / 100) {
           if (onScaleUpdated) {
             onScaleUpdated(scale, false, true);
           }
-          // return; // do nothing
         }
       }
 
